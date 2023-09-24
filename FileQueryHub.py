@@ -10,7 +10,6 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
 
-
 def process_multiple_files(files):
     combined_text = ""
     for uploaded_file in files:
@@ -39,10 +38,9 @@ def process_multiple_files(files):
     # print(combined_text)
     return combined_text
 
-
 def main():
-    st.set_page_config(page_title="Ask Your Legal Document", page_icon="📄")
-    st.header("Ask Your Legal Document 🤔💭")
+    st.set_page_config(page_title="Declutter Legal Documents", page_icon="📄")
+    st.header("Declutter Your Documents")
 
     files = st.file_uploader(
         "Upload multiple files",
@@ -53,9 +51,9 @@ def main():
     if files:
         combined_text = process_multiple_files(files)
         # with st.expander("See explanation"):
-        # st.write(combined_text)
+            # st.write(combined_text)
         OPENAI_API_KEY = st.text_input("OPENAI API KEY", type="password")
-# st.text_input("OPENAI API KEY", type="password")
+    
         text_splitter = CharacterTextSplitter(
             separator="\n",
             chunk_size=1000,
@@ -75,10 +73,9 @@ def main():
             st.success("Knowledge Base created")
 
             st.write("Chat with Multiple Files 🗣️📚")
-
+            
             def ask_question(i=0):
-                user_question = st.text_input(
-                    "Ask a question about your Document?", key=i)
+                user_question = st.text_input("Ask a question about your PDF?",key = i)
                 print(user_question)
                 if user_question:
                     with st.spinner("Searching for answers..."):
@@ -89,14 +86,12 @@ def main():
                         llm = OpenAI(openai_api_key=OPENAI_API_KEY)
                         chain = load_qa_chain(llm, chain_type="stuff")
                         with get_openai_callback() as cb:
-                            response = chain.run(
-                                input_documents=docs, question=user_question)
+                            response = chain.run(input_documents=docs, question=user_question)
                             print(cb)
                     st.write(response)
                     ask_question(i+1)
-
+                    
             ask_question()
-
 
 if __name__ == "__main__":
     main()
