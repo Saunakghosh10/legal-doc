@@ -54,7 +54,7 @@ def main():
         combined_text = process_multiple_files(files)
         # with st.expander("See explanation"):
         # st.write(combined_text)
-        OPENAI_API_KEY = "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"
+        OPENAI_API_KEY = st.text_input("OPENAI API KEY", type="password")
 # st.text_input("OPENAI API KEY", type="password")
         text_splitter = CharacterTextSplitter(
             separator="\n",
